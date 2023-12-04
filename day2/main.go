@@ -21,7 +21,36 @@ func main() {
 		game[gameValue[0]] = gameValue[1]
 	}
 	solvePart1(game)
+	solvePart2(game)
 
+}
+
+func solvePart2(game map[string]string) {
+	sumOfPowers := 0
+	for _, v := range game {
+		sets := ReadSets(v)
+		maxR := -1
+		maxG := -1
+		maxB := -1
+		for _, s := range sets {
+			maxR = max(maxR, cubeCount(s)[0])
+			maxG = max(maxG, cubeCount(s)[1])
+			maxB = max(maxB, cubeCount(s)[2])
+		}
+		sumOfPowers += setPower(maxR, maxG, maxB)
+	}
+	fmt.Println(sumOfPowers)
+}
+
+func setPower(a, b, c int) int {
+	return a * b * c
+}
+
+func max(a, b int) int {
+	if a > b {
+		return a
+	}
+	return b
 }
 
 func solvePart1(game map[string]string) {
@@ -52,6 +81,24 @@ func solvePart1(game map[string]string) {
 
 	fmt.Println(ans)
 
+}
+
+func cubeCount(cubes string) [3]int {
+	cubeValues := strings.Split(cubes, ",")
+	rgb := [3]int{0, 0, 0}
+	for _, c := range cubeValues {
+		countColor := strings.Split(strings.TrimSpace(c), " ")
+		num, err := strconv.Atoi(strings.TrimSpace(countColor[0]))
+		check(err)
+		if countColor[1] == "green" {
+			rgb[1] = num
+		} else if countColor[1] == "blue" {
+			rgb[2] = num
+		} else {
+			rgb[0] = num
+		}
+	}
+	return rgb
 }
 
 func validateSet(cubes string) bool {
