@@ -20,7 +20,11 @@ func main() {
 		gameValue := strings.Split(s, ":")
 		game[gameValue[0]] = gameValue[1]
 	}
+	solvePart1(game)
 
+}
+
+func solvePart1(game map[string]string) {
 	validGames := []int{}
 
 	for k, v := range game {
